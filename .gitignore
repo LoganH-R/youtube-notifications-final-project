@@ -40,3 +40,9 @@ examples.txt
 # Un-ignore SQLite3 db
 !/db/*.sqlite3
 !/db/*.sqlite3-journal
+
+# Ignore Google API client_secret.json
+config/client_secret.json.
+
+# Ignore credentials_path
+.credentials/youtube-quickstart-ruby-credentials.yaml

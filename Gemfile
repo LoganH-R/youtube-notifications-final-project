@@ -107,3 +107,7 @@ group :test do
   gem "rspec-html-matchers"
   gem "webmock"
 end
+
+#Google APIs
+gem "googleauth"
+gem "google-api-client"
