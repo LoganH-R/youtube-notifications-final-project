@@ -8,9 +8,15 @@ class YoutubeController < ApplicationController
       redirect_to Rails.application.config.google_authorizer.get_authorization_url(login_hint: user_id, request: request), :allow_other_host => true
 
     else
+      #original code that doesn't work
+      #youtube = Google::Apis::YoutubeV3::YouTubeService.new
+      #channel = youtube.list_channels('snippet', { :mine => 'mine' }, options: { authorization: credentials })
+      #render({ :text => "<pre>#{JSON.pretty_generate(channel.to_h)}</pre>" })
+      
       youtube = Google::Apis::YoutubeV3::YouTubeService.new
-      channel = youtube.list_channels('snippet', { :mine => 'mine' }, options: { authorization: credentials })
-      render({ :text => "<pre>#{JSON.pretty_generate(channel.to_h)}</pre>" })
+      youtube.authorization = credentials
+      channel = youtube.list_channels('snippet', mine: true)
+      render :html => "<pre>#{JSON.pretty_generate(channel.to_h)}</pre>".html_safe
     end
   end
 
