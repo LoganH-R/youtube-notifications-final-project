@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <h1>
+      Channel subscription #<%= @the_channel_subscription.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/channel_subscriptions">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_channel_subscription/<%= @the_channel_subscription.id %>">
+          Delete channel subscription
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Youtube channel
+      </dt>
+      <dd>
+        <%= @the_channel_subscription.youtube_channel_id %>
+      </dd>
+
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @the_channel_subscription.user_id %>
+      </dd>
+
+      <dt>
+        Favorited
+      </dt>
+      <dd>
+        <%= @the_channel_subscription.favorited %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_channel_subscription.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_channel_subscription.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit channel subscription
+    </h2>
+
+    <form action="/modify_channel_subscription/<%= @the_channel_subscription.id %>"  method="post" >
+      <div>
+        <label for="youtube_channel_id_box">
+          Youtube channel
+        </label>
+
+        <input type="text" id="youtube_channel_id_box" name="query_youtube_channel_id" value="<%= @the_channel_subscription.youtube_channel_id %>">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_channel_subscription.user_id %>">
+      </div>
+
+      <div>
+        <input type="checkbox" id="favorited_box" name="query_favorited" value="1" <%= "checked" if @the_channel_subscription.favorited %>>
+
+        <label for="favorited_box">
+            Favorited
+        </label>
+      </div>
+
+      <button>
+        Update channel subscription
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

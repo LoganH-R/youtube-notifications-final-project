@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+  # Routes for the Channel subscription resource:
+
+  # CREATE
+  post("/insert_channel_subscription", { :controller => "channel_subscriptions", :action => "create" })
+          
+  # READ
+  get("/channel_subscriptions", { :controller => "channel_subscriptions", :action => "index" })
+  
+  get("/channel_subscriptions/:path_id", { :controller => "channel_subscriptions", :action => "show" })
+  
+  # UPDATE
+  
+  post("/modify_channel_subscription/:path_id", { :controller => "channel_subscriptions", :action => "update" })
+  
+  # DELETE
+  get("/delete_channel_subscription/:path_id", { :controller => "channel_subscriptions", :action => "destroy" })
+
+  #------------------------------
+
   # Routes for the Channel resource:
 
   # CREATE
