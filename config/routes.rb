@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get("/", { :controller => "youtube", :action => "index" })
+  get("/authenticate", { :controller => "youtube", :action => "index" })
   get("/oauth2callback", { :controller => "youtube", :action => "oauth2callback" })
   
   
