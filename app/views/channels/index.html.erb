@@ -1,0 +1,134 @@
+<div>
+  <div>
+    <h1>
+      List of all channels
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new channel
+    </h2>
+
+    <form action="/insert_channel" method="post">
+      <div>
+        <label for="channel_name_box">
+          Channel name
+        </label>
+
+        <input type="text" id="channel_name_box" name="query_channel_name">
+      </div>
+
+      <div>
+        <label for="channel_url_box">
+          Channel url
+        </label>
+
+        <input type="text" id="channel_url_box" name="query_channel_url">
+      </div>
+
+      <div>
+        <label for="youtube_api_channel_id_box">
+          Youtube api channel
+        </label>
+
+        <input type="text" id="youtube_api_channel_id_box" name="query_youtube_api_channel_id">
+      </div>
+
+      <div>
+        <label for="channel_pfp_url_box">
+          Channel pfp url
+        </label>
+
+        <input type="text" id="channel_pfp_url_box" name="query_channel_pfp_url">
+      </div>
+
+      <button>
+        Create channel
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Channel name
+        </th>
+
+        <th>
+          Channel url
+        </th>
+
+        <th>
+          Youtube api channel
+        </th>
+
+        <th>
+          Channel pfp url
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_channels.each do |a_channel| %>
+      <tr>
+        <td>
+          <%= a_channel.id %>
+        </td>
+
+        <td>
+          <%= a_channel.channel_name %>
+        </td>
+
+        <td>
+          <%= a_channel.channel_url %>
+        </td>
+
+        <td>
+          <%= a_channel.youtube_api_channel_id %>
+        </td>
+
+        <td>
+          <%= a_channel.channel_pfp_url %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_channel.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_channel.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/channels/<%= a_channel.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

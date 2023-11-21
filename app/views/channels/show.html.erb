@@ -1,0 +1,116 @@
+<div>
+  <div>
+    <h1>
+      Channel #<%= @the_channel.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/channels">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_channel/<%= @the_channel.id %>">
+          Delete channel
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Channel name
+      </dt>
+      <dd>
+        <%= @the_channel.channel_name %>
+      </dd>
+
+      <dt>
+        Channel url
+      </dt>
+      <dd>
+        <%= @the_channel.channel_url %>
+      </dd>
+
+      <dt>
+        Youtube api channel
+      </dt>
+      <dd>
+        <%= @the_channel.youtube_api_channel_id %>
+      </dd>
+
+      <dt>
+        Channel pfp url
+      </dt>
+      <dd>
+        <%= @the_channel.channel_pfp_url %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_channel.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_channel.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit channel
+    </h2>
+
+    <form action="/modify_channel/<%= @the_channel.id %>"  method="post" >
+      <div>
+        <label for="channel_name_box">
+          Channel name
+        </label>
+
+        <input type="text" id="channel_name_box" name="query_channel_name" value="<%= @the_channel.channel_name %>">
+      </div>
+
+      <div>
+        <label for="channel_url_box">
+          Channel url
+        </label>
+
+        <input type="text" id="channel_url_box" name="query_channel_url" value="<%= @the_channel.channel_url %>">
+      </div>
+
+      <div>
+        <label for="youtube_api_channel_id_box">
+          Youtube api channel
+        </label>
+
+        <input type="text" id="youtube_api_channel_id_box" name="query_youtube_api_channel_id" value="<%= @the_channel.youtube_api_channel_id %>">
+      </div>
+
+      <div>
+        <label for="channel_pfp_url_box">
+          Channel pfp url
+        </label>
+
+        <input type="text" id="channel_pfp_url_box" name="query_channel_pfp_url" value="<%= @the_channel.channel_pfp_url %>">
+      </div>
+
+      <button>
+        Update channel
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
