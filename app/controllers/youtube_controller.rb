@@ -11,8 +11,43 @@ class YoutubeController < ApplicationController
       youtube.authorization = credentials
       channels = youtube.list_subscriptions('snippet', mine: true)
       subscribed_channels = channels.items.map{ |subscription| subscription.snippet.resource_id.channel_id }
-      render :html => "<pre>#{JSON.pretty_generate(subscribed_channels_usernames.to_h)}</pre>".html_safe
+      #render :html => "<pre>#{JSON.pretty_generate(subscribed_channels_usernames.to_h)}</pre>".html_safe
       
+      subscribed_channels.each do |channel_id|
+        response = youtube.list_channels('snippet', id: channel_id)
+        channel = response.items.first
+
+        matching_channels = Channel.where({ :youtube_api_channel_id => channel_id })
+        exists = matching_channels.count > 0
+
+        if exists == true
+          repeat_channel = matching_channels.first
+
+          if repeat_channel.channel_name != channel.snippet.title
+            repeat_channel.channel_name = channel.snippet.title
+            repeat_channel.save
+          end
+
+          if repeat_channel.channel_pfp_url != channel.snippet.thumbnails.default.url
+            repeat_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
+            repeat_channel.save
+          end
+        else
+          new_channel = Channel.new
+          new_channel.youtube_api_channel_id = channel_id
+          new_channel.channel_name = channel.snippet.title
+          new_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
+          new_channel.channel_url = "https://www.youtube.com/channel/#{channel_id}"
+          new_channel.save
+        end
+
+        #new_channel_subscription = ChannelSubscription.new
+
+        
+      end
+
+
+
       #---------------------------------------------
       #original code that doesn't work
       #youtube = Google::Apis::YoutubeV3::YouTubeService.new
