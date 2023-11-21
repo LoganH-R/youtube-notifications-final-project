@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get("/authenticate", { :controller => "youtube", :action => "index" })
   get("/oauth2callback", { :controller => "youtube", :action => "oauth2callback" })
   
