@@ -41,13 +41,16 @@ class YoutubeController < ApplicationController
           new_channel.save
         end
 
-        #new_channel_subscription = ChannelSubscription.new
-
-        
+        new_channel_subscription = ChannelSubscription.new
+        new_channel_subscription.user_id = current_user.id
+        if exists == true
+          new_channel_subscription.youtube_channel_id = repeat_channel.id
+        else
+          new_channel_subscription.youtube_channel_id = new_channel.id
+        end
+        #did not include anything about favorited column
+        new_channel_subscription.save
       end
-
-
-
       #---------------------------------------------
       #original code that doesn't work
       #youtube = Google::Apis::YoutubeV3::YouTubeService.new
@@ -91,10 +94,6 @@ class YoutubeController < ApplicationController
       #  num_channels = num_channels + 1
       #end
       #-------------------------------------------------------------------------------------
-
-
-
-
     end
   end
 
