@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_21_042953) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_21_050433) do
+  create_table "channels", force: :cascade do |t|
+    t.string "channel_name"
+    t.string "channel_url"
+    t.string "youtube_api_channel_id"
+    t.string "channel_pfp_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
