@@ -2,11 +2,10 @@ require 'google/apis/youtube_v3'
 
 class YoutubeController < ApplicationController
   def index
-    user_id = ENV["CLIENT_ID"]
+    user_id = current_user.id
     credentials = Rails.application.config.google_authorizer.get_credentials(user_id, request)
     if credentials.nil?
       redirect_to Rails.application.config.google_authorizer.get_authorization_url(login_hint: user_id, request: request), :allow_other_host => true
-
     else
       youtube = Google::Apis::YoutubeV3::YouTubeService.new
       youtube.authorization = credentials
