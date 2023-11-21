@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_21_050433) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_21_054338) do
+  create_table "channel_subscriptions", force: :cascade do |t|
+    t.integer "youtube_channel_id"
+    t.integer "user_id"
+    t.boolean "favorited"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "channels", force: :cascade do |t|
     t.string "channel_name"
     t.string "channel_url"
