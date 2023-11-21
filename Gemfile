@@ -111,3 +111,6 @@ end
 #Google APIs
 gem "googleauth"
 gem "google-api-client"
+
+#devise
+gem "devise"

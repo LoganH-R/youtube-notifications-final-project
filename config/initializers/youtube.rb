@@ -1,7 +1,7 @@
 require 'googleauth'
 require 'googleauth/stores/redis_token_store'
 
-client_id = Google::Auth::ClientId.from_file('config/client_secrets.json')
+client_id = Google::Auth::ClientId.from_file('config/client_secret.json')
 scope = 'https://www.googleapis.com/auth/youtube.readonly'
 token_store = Google::Auth::Stores::RedisTokenStore.new(redis: Redis.new)
 
