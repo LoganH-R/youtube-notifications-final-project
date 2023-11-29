@@ -1,8 +1,10 @@
 require 'google/apis/youtube_v3'
 
 class YoutubeController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    user_id = current_user.id
+    user_id = current_user.id.to_s
     credentials = Rails.application.config.google_authorizer.get_credentials(user_id, request)
     if credentials.nil?
       redirect_to Rails.application.config.google_authorizer.get_authorization_url(login_hint: user_id, request: request), :allow_other_host => true
@@ -10,10 +12,10 @@ class YoutubeController < ApplicationController
       youtube = Google::Apis::YoutubeV3::YouTubeService.new
       youtube.authorization = credentials
       channels = youtube.list_subscriptions('snippet', mine: true)
-      subscribed_channels = channels.items.map{ |subscription| subscription.snippet.resource_id.channel_id }
+      @subscribed_channels = channels.items.map{ |subscription| subscription.snippet.resource_id.channel_id }
       #render :html => "<pre>#{JSON.pretty_generate(subscribed_channels_usernames.to_h)}</pre>".html_safe
       
-      subscribed_channels.each do |channel_id|
+      @subscribed_channels.each do |channel_id|
         response = youtube.list_channels('snippet', id: channel_id)
         channel = response.items.first
 
@@ -51,9 +53,9 @@ class YoutubeController < ApplicationController
         #did not include anything about favorited column
         new_channel_subscription.save
       end
-    end
 
-    render({ :template => "youtubes/index"})
+      render({ :template => "youtubes/index"})
+    end
   end
 
   def oauth2callback

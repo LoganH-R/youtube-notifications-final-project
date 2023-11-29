@@ -2,8 +2,13 @@
 
 <a>Click on the star next to a channel to favorite it and see its most recent videos later</a>
 
-<% #need to create a .each loop with each subscribed channel in subscribed_channels %>
+<ul>
+  <% @subscribed_channels.each do |channel_id| %>
+    <% channel_username = Channel.where({ :youtube_api_channel_id => channel_id }).first.channel_name %>
+    <li><%= channel_username %></li>
+  <% end %>
+</ul>
+
+
 <% #need to figure out how to do the star thing like in verybest bookmarks. may have to wait until class %>
 <% #perhaps a form here to take you to youtubes/show where you then see the subscriptions and the vidoes %>
-
-
