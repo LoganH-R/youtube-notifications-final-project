@@ -5,7 +5,11 @@
 <ul>
   <% @subscribed_channels.each do |channel_id| %>
     <% channel_username = Channel.where({ :youtube_api_channel_id => channel_id }).first.channel_name %>
-    <li><%= channel_username %></li>
+    <li>
+      <%= channel_username %>
+      
+    
+    </li>
   <% end %>
 </ul>
 

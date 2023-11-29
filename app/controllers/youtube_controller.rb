@@ -43,15 +43,22 @@ class YoutubeController < ApplicationController
           new_channel.save
         end
 
-        new_channel_subscription = ChannelSubscription.new
-        new_channel_subscription.user_id = current_user.id
+        #checking if channel_subscriptions already has an entry for that user and their subscribed channel
         if exists == true
-          new_channel_subscription.youtube_channel_id = repeat_channel.id
-        else
+          matching_subscribed_channels = ChannelSubscription.where({ :youtube_channel_id => repeat_channel.id }).where({ :user_id => current_user.id })
+          subscription_exists = matching_subscribed_channels.count > 0
+
+          if subscription_exists == false
+            new_channel_subscription = ChannelSubscription.new
+            new_channel_subscription.user_id = current_user.id
+            new_channel_subscription.youtube_channel_id = repeat_channel.id
+          end #if subscription does exist for that user, then you just don't add it to the subscribed channels table
+        else  #if the channel doesn't exist in the database, then there is no need to check if anyone is subscribed to it because it won't exist at all
+          new_channel_subscription = ChannelSubscription.new
+          new_channel_subscription.user_id = current_user.id
           new_channel_subscription.youtube_channel_id = new_channel.id
         end
-        #did not include anything about favorited column
-        new_channel_subscription.save
+        #favorited column of ChannelSubscription is currently blank
       end
 
       render({ :template => "youtubes/index"})
