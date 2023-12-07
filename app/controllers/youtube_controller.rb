@@ -52,11 +52,15 @@ class YoutubeController < ApplicationController
             new_channel_subscription = ChannelSubscription.new
             new_channel_subscription.user_id = current_user.id
             new_channel_subscription.youtube_channel_id = repeat_channel.id
+
+            new_channel_subscription.save
           end #if subscription does exist for that user, then you just don't add it to the subscribed channels table
         else  #if the channel doesn't exist in the database, then there is no need to check if anyone is subscribed to it because it won't exist at all
           new_channel_subscription = ChannelSubscription.new
           new_channel_subscription.user_id = current_user.id
           new_channel_subscription.youtube_channel_id = new_channel.id
+
+          new_channel_subscription.save
         end
         #favorited column of ChannelSubscription is currently blank
       end
@@ -85,7 +89,7 @@ class YoutubeController < ApplicationController
       youtube = Google::Apis::YoutubeV3::YouTubeService.new
       youtube.authorization = credentials
 
-      subscribed_channels = ChannelSubscription.where({ :user_id => user_id })
+      subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id })
       youtube_api_channel_ids = Array.new
 
       subscribed_channels.each do |subscribed_channel|
