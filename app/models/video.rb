@@ -9,6 +9,7 @@
 #  video_url          :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  api_video_id       :string
 #  youtube_channel_id :integer
 #
 class Video < ApplicationRecord

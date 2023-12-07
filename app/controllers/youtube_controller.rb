@@ -109,11 +109,43 @@ class YoutubeController < ApplicationController
 
         if playlist_items.items.any?
           most_recent_video = playlist_items.items.first
-          video_id = most_recent_video.snippet.resource_id.video_id
-          video_title = most_recent_video.snippet.title
-          video_url = "https://www.youtube.com/watch?v=#{video_id}"
-          video_thumbnail = most_recent_video.snippet.thumbnails.default.url
-          published_at = Time.parse(most_recent_video.snippet.published_at)
+
+          new_video = Video.new
+          new_video.published_at = Time.parse(most_recent_video.snippet.published_at)
+          api_video_id = most_recent_video.snippet.resource_id.video_id
+          new_video.api_video_id = api_video_id
+          new_video.video_url = "https://www.youtube.com/watch?v=#{api_video_id}"
+          new_video.title = most_recent_video.snippet.title
+          new_video.thumbnail_url = most_recent_video.snippet.thumbnails.default.url
+          #new_video.youtube_channel_id = 
+
+          
+          matching_videos = Video.where({ :youtube_api_channel_id => channel_id })
+          exists = matching_channels.count > 0
+  
+          if exists == true
+            repeat_channel = matching_channels.first
+  
+            if repeat_channel.channel_name != channel.snippet.title
+              repeat_channel.channel_name = channel.snippet.title
+              repeat_channel.save
+            end
+  
+            if repeat_channel.channel_pfp_url != channel.snippet.thumbnails.default.url
+              repeat_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
+              repeat_channel.save
+            end
+          else
+            new_channel = Channel.new
+            new_channel.youtube_api_channel_id = channel_id
+            new_channel.channel_name = channel.snippet.title
+            new_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
+            new_channel.channel_url = "https://www.youtube.com/channel/#{channel_id}"
+            new_channel.save
+          end
+  
+
+
 
           @outputs.push(video_title)
         else
