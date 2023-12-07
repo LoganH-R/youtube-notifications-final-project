@@ -76,7 +76,43 @@ class YoutubeController < ApplicationController
     #for now, just do all of the channels and display just the URL
     #temporarily doing this for "subscribed channels". replace with "favorited channels" later on
 
-    
+    user_id = current_user.id.to_s
+    credentials = Rails.application.config.google_authorizer.get_credentials(user_id, request)
+
+    if credentials.nil?
+      redirect_to Rails.application.config.google_authorizer.get_authorization_url(login_hint: user_id, request: request), :allow_other_host => true
+    else
+      youtube = Google::Apis::YoutubeV3::YouTubeService.new
+      youtube.authorization = credentials
+
+      subscribed_channels = ChannelSubscription.where({ :user_id => user_id })
+      youtube_api_channel_ids = Array.new
+
+      subscribed_channels.each do |subscribed_channel|
+        database_channel_id = subscribed_channel.youtube_channel_id
+        channel_id = Channel.find_by({ :id => database_channel_id }).youtube_api_channel_id
+        youtube_api_channel_ids.push(channel_id)
+      end
+
+      youtube_api_channel_ids.each do |youtube_api_channel_id|
+        channel = youtube.list_channels('contentDetails', id: youtube_api_channel_id).items.first
+        uploads_playlist_id = channel.content_details.related_playlists.uploads 
+
+        playlist_items = youtube.list_playlist_items('snippet', playlist_id: uploads_playlist_id, max_results: 1)
+        
+        if playlist_items.items.any?
+          most_recent_video = playlist_items.items.first
+          video_id = most_recent_video.snippet.resource_id.video_id
+          video_title = most_recent_video.snippet.title
+          video_url = "https://www.youtube.com/watch?v=#{video_id}"
+          video_thumbnail = most_recent_video.snippet.thumbnails.default.url
+        else
+          output = "No videos found for this channel"
+        end
+        
+      end
+
+    end
 
   end
 
