@@ -94,6 +94,8 @@ class YoutubeController < ApplicationController
         youtube_api_channel_ids.push(channel_id)
       end
 
+      @outputs = Array.new
+
       youtube_api_channel_ids.each do |youtube_api_channel_id|
         channel = youtube.list_channels('contentDetails', id: youtube_api_channel_id).items.first
         uploads_playlist_id = channel.content_details.related_playlists.uploads 
@@ -106,12 +108,14 @@ class YoutubeController < ApplicationController
           video_title = most_recent_video.snippet.title
           video_url = "https://www.youtube.com/watch?v=#{video_id}"
           video_thumbnail = most_recent_video.snippet.thumbnails.default.url
-        else
-          output = "No videos found for this channel"
-        end
-        
-      end
 
+          @outputs.push(video_title)
+        else
+          @outputs.push("No videos found for this channel")
+        end
+      end
+      
+      render({ :template => "youtubes/recent_videos"})
     end
 
   end
