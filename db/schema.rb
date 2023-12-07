@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_07_055422) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_07_061059) do
   create_table "channel_subscriptions", force: :cascade do |t|
     t.integer "youtube_channel_id"
     t.integer "user_id"
@@ -24,6 +24,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_07_055422) do
     t.string "channel_url"
     t.string "youtube_api_channel_id"
     t.string "channel_pfp_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "recent_videos", force: :cascade do |t|
+    t.integer "video_id"
+    t.integer "user_id"
+    t.time "called_at"
+    t.boolean "not_interested"
+    t.boolean "watch_later"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
