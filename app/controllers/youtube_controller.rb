@@ -119,33 +119,7 @@ class YoutubeController < ApplicationController
           new_video.thumbnail_url = most_recent_video.snippet.thumbnails.default.url
           #new_video.youtube_channel_id = 
 
-          
-          matching_videos = Video.where({ :youtube_api_channel_id => channel_id })
-          exists = matching_channels.count > 0
-  
-          if exists == true
-            repeat_channel = matching_channels.first
-  
-            if repeat_channel.channel_name != channel.snippet.title
-              repeat_channel.channel_name = channel.snippet.title
-              repeat_channel.save
-            end
-  
-            if repeat_channel.channel_pfp_url != channel.snippet.thumbnails.default.url
-              repeat_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
-              repeat_channel.save
-            end
-          else
-            new_channel = Channel.new
-            new_channel.youtube_api_channel_id = channel_id
-            new_channel.channel_name = channel.snippet.title
-            new_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
-            new_channel.channel_url = "https://www.youtube.com/channel/#{channel_id}"
-            new_channel.save
-          end
-  
-
-
+          #here i need to do the same as i did above with the checking if the video exists and adding it to the videos table, then also adding to recent videos
 
           @outputs.push(video_title)
         else

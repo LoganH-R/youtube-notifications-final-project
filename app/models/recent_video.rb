@@ -1,0 +1,2 @@
+class RecentVideo < ApplicationRecord
+end

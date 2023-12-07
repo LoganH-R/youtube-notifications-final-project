@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+  # Routes for the Recent video resource:
+
+  # CREATE
+  post("/insert_recent_video", { :controller => "recent_videos", :action => "create" })
+          
+  # READ
+  get("/recent_videos", { :controller => "recent_videos", :action => "index" })
+  
+  get("/recent_videos/:path_id", { :controller => "recent_videos", :action => "show" })
+  
+  # UPDATE
+  
+  post("/modify_recent_video/:path_id", { :controller => "recent_videos", :action => "update" })
+  
+  # DELETE
+  get("/delete_recent_video/:path_id", { :controller => "recent_videos", :action => "destroy" })
+
+  #------------------------------
+
   # Routes for the Video resource:
 
   # CREATE
