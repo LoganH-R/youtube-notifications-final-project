@@ -105,13 +105,15 @@ class YoutubeController < ApplicationController
         uploads_playlist_id = channel.content_details.related_playlists.uploads 
 
         playlist_items = youtube.list_playlist_items('snippet', playlist_id: uploads_playlist_id, max_results: 1)
-        
+        require 'time'
+
         if playlist_items.items.any?
           most_recent_video = playlist_items.items.first
           video_id = most_recent_video.snippet.resource_id.video_id
           video_title = most_recent_video.snippet.title
           video_url = "https://www.youtube.com/watch?v=#{video_id}"
           video_thumbnail = most_recent_video.snippet.thumbnails.default.url
+          published_at = Time.parse(most_recent_video.snippet.published_at)
 
           @outputs.push(video_title)
         else
