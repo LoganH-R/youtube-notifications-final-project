@@ -69,4 +69,15 @@ class YoutubeController < ApplicationController
     target_url = Google::Auth::WebUserAuthorizer.handle_auth_callback_deferred(request)
     redirect_to target_url
   end
+
+  def recent_videos
+    #After they click on the "See Recent Videos" button, the button has the form of "/see_videos" which links to this method
+    #I want to take all of the channels stored as the favorited channels, then find their most recent videos
+    #for now, just do all of the channels and display just the URL
+    #temporarily doing this for "subscribed channels". replace with "favorited channels" later on
+
+    
+
+  end
+
 end

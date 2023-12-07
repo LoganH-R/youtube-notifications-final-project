@@ -46,4 +46,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "youtube#index"
+
+  #click see recent videos button, takes you here
+  get("/see_videos", { :controller => "youtube", :action => "recent_videos" })
+
+
 end
