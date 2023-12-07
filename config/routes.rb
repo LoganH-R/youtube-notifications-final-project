@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+  # Routes for the Video resource:
+
+  # CREATE
+  post("/insert_video", { :controller => "videos", :action => "create" })
+          
+  # READ
+  get("/videos", { :controller => "videos", :action => "index" })
+  
+  get("/videos/:path_id", { :controller => "videos", :action => "show" })
+  
+  # UPDATE
+  
+  post("/modify_video/:path_id", { :controller => "videos", :action => "update" })
+  
+  # DELETE
+  get("/delete_video/:path_id", { :controller => "videos", :action => "destroy" })
+
+  #------------------------------
+
   # Routes for the Channel subscription resource:
 
   # CREATE
