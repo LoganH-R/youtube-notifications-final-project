@@ -22,5 +22,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
+  #direct associations
+  has_many :channels_subscribed_tos, class_name: "ChannelSubscription", foreign_key: "user_id", dependent: :destroy
+  has_many  :recent_videos, class_name: "RecentVideo", foreign_key: "user_id", dependent: :destroy
+
+  #indirect associations
+  has_many :channels_subscribed_to, through: :channels_subscribed_tos, source: :channel
+  has_many :recent_video_feed, through: :recent_videos, source: :video
+  has_many :videos, through: :channels_subscribed_to, source: :videos
   
 end
