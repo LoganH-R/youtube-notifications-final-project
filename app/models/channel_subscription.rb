@@ -10,4 +10,7 @@
 #  youtube_channel_id :integer
 #
 class ChannelSubscription < ApplicationRecord
+  #direct associations
+  belongs_to :user, required: true, class_name: "User", foreign_key: "user_id"
+  belongs_to :channel, required: true, class_name: "Channel", foreign_key: "youtube_channel_id"
 end
