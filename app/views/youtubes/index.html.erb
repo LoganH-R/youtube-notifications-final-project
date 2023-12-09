@@ -3,12 +3,14 @@
 <a>Click on the star next to a channel to favorite it and see its most recent videos later</a>
 
 <ul>
-  <% @subscribed_channels.each do |channel_id| %>
-    <% channel_username = Channel.where({ :youtube_api_channel_id => channel_id }).first.channel_name %>
+  <% subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id }) %>
+  <% subscribed_channels.each do |subscribed_channel| %>
     <li>
-      <%= channel_username %>
-      
-    
+      <% channel = subscribed_channel.channel %>
+      <%= channel.channel_name %>
+      <% #channel.channel_pfp_url %>
+      <img src="<%= channel.channel_pfp_url %>" height="100px">
+      <%= channel.channel_url %>     
     </li>
   <% end %>
 </ul>

@@ -22,6 +22,22 @@ class YoutubeController < ApplicationController
         matching_channels = Channel.where({ :youtube_api_channel_id => channel_id })
         exists = matching_channels.count > 0
 
+        #test
+        #@pfp = channel.snippet.thumbnails.high.url
+        #i can do .high, .medium, .default. what changes here in the url is the "s###" part towards the end of the url. it can either be s800, s240, or s88, being high, medium, or default, respectively.
+
+        #checking resolution of thumbnail image
+        pfps = channel.snippet.thumbnails
+        if pfps.high.url == nil
+          if pfps.medium.url == nil
+            pfp_url = pfps.default.url
+          else
+            pfp_url = pfps.medium.url
+          end
+        else
+          pfp_url = pfps.high.url
+        end
+        
         if exists == true
           repeat_channel = matching_channels.first
 
@@ -30,15 +46,15 @@ class YoutubeController < ApplicationController
             repeat_channel.save
           end
 
-          if repeat_channel.channel_pfp_url != channel.snippet.thumbnails.default.url
-            repeat_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
+          if repeat_channel.channel_pfp_url != pfp_url
+            repeat_channel.channel_pfp_url = pfp_url
             repeat_channel.save
           end
         else
           new_channel = Channel.new
           new_channel.youtube_api_channel_id = channel_id
           new_channel.channel_name = channel.snippet.title
-          new_channel.channel_pfp_url = channel.snippet.thumbnails.default.url
+          new_channel.channel_pfp_url = pfp_url
           new_channel.channel_url = "https://www.youtube.com/channel/#{channel_id}"
           new_channel.save
         end
