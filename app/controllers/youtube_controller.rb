@@ -77,9 +77,7 @@ class YoutubeController < ApplicationController
   def recent_videos
     #After they click on the "See Recent Videos" button, the button has the form of "/see_videos" which links to this method
     #I want to take all of the channels stored as the favorited channels, then find their most recent videos
-    #for now, just do all of the channels and display just the URL
-    #temporarily doing this for "subscribed channels". replace with "favorited channels" later on
-
+    
     user_id = current_user.id.to_s
     credentials = Rails.application.config.google_authorizer.get_credentials(user_id, request)
 

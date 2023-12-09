@@ -3,9 +3,11 @@
 <a>Preliminary stuff rn. I would like to categorize it a bit better</a>
 
 <ul>
-  <% @outputs.each do |video_title| %>
+  <% most_recent_videos = RecentVideo.where({ :user_id => current_user.id }) %>
+  <% most_recent_videos.each do |most_recent_video| %>
     <li>
-      <%= video_title %>
+      <% video = most_recent_video.video %>
+      <%= video.title %>
     </li>
   <% end %>
 </ul>
