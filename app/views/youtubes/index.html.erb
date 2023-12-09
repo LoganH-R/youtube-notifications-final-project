@@ -1,6 +1,9 @@
 <h2 style="margin-left: 15px;">Your Channels</h2>
 
 <a style="margin-left: 15px;">Here are the channels you are subscribed to. Check the box next to which channels you would like to see the most recent videos of.</a>
+<div>
+  <a style="margin-left: 15px;">Note: to see changes on the "Recent Videos" page, you must click on the "See Recent Videos" button at the bottom of this page. If you click the navbar tab for "Recent Videos", it will not be updated.</a>
+<div>
 
 <% favorited_channels = ChannelSubscription.where({ :user_id => current_user.id }).where({ :favorited => true}) %>
 <% favorited_channels_ids = favorited_channels.pluck(:youtube_channel_id) %>

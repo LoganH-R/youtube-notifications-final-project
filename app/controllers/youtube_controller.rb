@@ -236,7 +236,7 @@ class YoutubeController < ApplicationController
           else #if the video doesn't exist in the database, then there is no need to check if anyone has it as their recent video because it won't exist at all
             new_recent_video = RecentVideo.new
             new_recent_video.user_id = current_user.id
-            new_recent_video.video_id = repeat_video.id
+            new_recent_video.video_id = new_video.id
 
             new_recent_video.save
           end
