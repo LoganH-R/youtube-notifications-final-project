@@ -114,6 +114,30 @@ class YoutubeController < ApplicationController
           matching_videos = Video.where({ :api_video_id => api_video_id })
           exists = matching_videos.count > 0
 
+          #test
+          #@thumbnail = most_recent_video.snippet.thumbnails.standard.url
+          #i can do .maxres, .high, .standard, .default
+          
+          #checking resolution of thumbnail image
+          thumbnails = most_recent_video.snippet.thumbnails
+          if thumbnails.maxres.url == nil
+            if thumbnails.standard.url == nil
+              if thumbnails.high.url == nil
+                if thumbnails.medium.url == nil
+                  most_recent_video_thumbnail_url = thumbnails.default.url
+                else
+                  most_recent_video_thumbnail_url = thumbnails.medium.url
+                end
+              else
+                most_recent_video_thumbnail_url = thumbnails.high.url
+              end
+            else
+              most_recent_video_thumbnail_url = thumbnails.standard.url
+            end
+          else
+            most_recent_video_thumbnail_url = thumbnails.maxres.url
+          end
+
           if exists == true
             repeat_video = matching_videos.first
 
@@ -132,8 +156,8 @@ class YoutubeController < ApplicationController
               repeat_video.save
             end
 
-            if repeat_video.thumbnail_url != most_recent_video.snippet.thumbnails.default.url
-              repeat_video.thumbnail_url = most_recent_video.snippet.thumbnails.default.url
+            if repeat_video.thumbnail_url != most_recent_video_thumbnail_url
+              repeat_video.thumbnail_url = most_recent_video_thumbnail_url
               repeat_video.save
             end
 
@@ -148,7 +172,7 @@ class YoutubeController < ApplicationController
             new_video.api_video_id = api_video_id
             new_video.video_url = "https://www.youtube.com/watch?v=#{api_video_id}"
             new_video.title = most_recent_video.snippet.title
-            new_video.thumbnail_url = most_recent_video.snippet.thumbnails.default.url
+            new_video.thumbnail_url = most_recent_video_thumbnail_url
             new_video.youtube_channel_id = matching_channel.id
 
             new_video.save
