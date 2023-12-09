@@ -103,17 +103,28 @@ class YoutubeController < ApplicationController
       youtube = Google::Apis::YoutubeV3::YouTubeService.new
       youtube.authorization = credentials
 
-      favorited_channels_api_ids = Array.new
-      favorited_channels_api_ids = params["favorited_channels"]
+      if request.post?
+        favorited_channels_api_ids = Array.new
+        favorited_channels_api_ids = params["favorited_channels"]
 
-      #set favorited status for all channels not included here as false. accounts for if a user updated something
-      all_channels_subscribed_to = ChannelSubscription.where({ :user_id => current_user.id })
-      all_channels_subscribed_to.each do |a_channel_subscribed_to|
-        the_database_channel_subscribed_to = Channel.find_by({ :id => a_channel_subscribed_to.youtube_channel_id })
-        favorited_or_not = favorited_channels_api_ids.include?(the_database_channel_subscribed_to.youtube_api_channel_id)
-        if favorited_or_not == false
-          a_channel_subscribed_to.favorited = false
-          a_channel_subscribed_to.save
+        #set favorited status for all channels not included here as false. accounts for if a user updated something
+        all_channels_subscribed_to = ChannelSubscription.where({ :user_id => current_user.id })
+        all_channels_subscribed_to.each do |a_channel_subscribed_to|
+          the_database_channel_subscribed_to = Channel.find_by({ :id => a_channel_subscribed_to.youtube_channel_id })
+          favorited_or_not = favorited_channels_api_ids.include?(the_database_channel_subscribed_to.youtube_api_channel_id)
+          if favorited_or_not == false
+            a_channel_subscribed_to.favorited = false
+            a_channel_subscribed_to.save
+          end
+        end
+      elsif request.get?
+        favorited_channels = Array.new
+        favorited_channels = ChannelSubscription.where({ :user_id => current_user.id }).where({ :favorited => true })
+        favorited_channels_api_ids = Array.new
+        favorited_channels.each do |a_favorited_channel|
+          the_favorited_channel = Channel.where({ :id => a_favorited_channel.youtube_channel_id }).first
+          api_id_of_favorited_channel = the_favorited_channel.youtube_api_channel_id
+          favorited_channels_api_ids.push(api_id_of_favorited_channel)
         end
       end
 

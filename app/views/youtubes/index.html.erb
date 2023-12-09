@@ -5,7 +5,7 @@
 
 
 <% subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id }) %>
-<form action="/see_videos" method="post" data-turbo="false" style="margin-top: 20px;">
+<form action="/see_videos" method="post" data-turbo="false" style="margin-top: 20px; margin-left: 20px;">
   <% subscribed_channels.each do |subscribed_channel| %>
     <% channel = subscribed_channel.channel %>
 
