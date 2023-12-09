@@ -18,4 +18,7 @@ class Video < ApplicationRecord
 
   has_many :user_feeds, through: :recent_videos, source: :user
   has_one  :subscriber, through: :youtube_channel, source: :subscribers
+
+  
+
 end
