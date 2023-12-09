@@ -111,6 +111,8 @@ class YoutubeController < ApplicationController
           most_recent_video = playlist_items.items.first
           api_video_id = most_recent_video.snippet.resource_id.video_id
 
+          matching_channel = Channel.where({ :youtube_api_channel_id => youtube_api_channel_id }).first
+          
           matching_videos = Video.where({ :api_video_id => api_video_id })
           exists = matching_videos.count > 0
 
@@ -137,6 +139,11 @@ class YoutubeController < ApplicationController
               repeat_video.save
             end
 
+            if repeat_video.youtube_channel_id != matching_channel.id
+              repeat_video.youtube_channel_id = matching_channel.id
+              repeat_video.save
+            end
+
           else
             new_video = Video.new
             new_video.published_at = Time.parse(most_recent_video.snippet.published_at)
@@ -144,16 +151,33 @@ class YoutubeController < ApplicationController
             new_video.video_url = "https://www.youtube.com/watch?v=#{api_video_id}"
             new_video.title = most_recent_video.snippet.title
             new_video.thumbnail_url = most_recent_video.snippet.thumbnails.default.url
-            #new_video.youtube_channel_id = 
+            new_video.youtube_channel_id = matching_channel.id
 
             new_video.save
           end
 
-        
+          #checking if recent_videos already has an entry for that user and their recent videos page
+          if exists == true
+            matching_recent_videos = RecentVideo.where({ :video_id => repeat_video.id }).where({ :user_id => current_user.id })
+            recent_video_exists = matching_recent_videos.count > 0
 
-          #here i need to do the same as i did above with the checking if the video exists and adding it to the videos table, then also adding to recent videos
+            if recent_video_exists == false
+              new_recent_video = RecentVideo.new
+              new_recent_video.user_id = current_user.id
+              new_recent_video.video_id = repeat_video.id
 
-          @outputs.push(video_title)
+              new_recent_video.save
+            end #if recent video does exist for that user, then you just don't add it to the recent videos table
+          else #if the video doesn't exist in the database, then there is no need to check if anyone has it as their recent video because it won't exist at all
+            new_recent_video = RecentVideo.new
+            new_recent_video.user_id = current_user.id
+            new_recent_video.video_id = repeat_video.id
+
+            new_recent_video.save
+          end
+          #called_at, not_interested, and watch_later are not addressed yet
+
+          @outputs.push("video_title")
         else
           @outputs.push("No videos found for this channel")
         end
