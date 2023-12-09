@@ -10,5 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 0) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_07_061059) do
+  create_table "channel_subscriptions", force: :cascade do |t|
+    t.integer "youtube_channel_id"
+    t.integer "user_id"
+    t.boolean "favorited"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "channels", force: :cascade do |t|
+    t.string "channel_name"
+    t.string "channel_url"
+    t.string "youtube_api_channel_id"
+    t.string "channel_pfp_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "recent_videos", force: :cascade do |t|
+    t.integer "video_id"
+    t.integer "user_id"
+    t.time "called_at"
+    t.boolean "not_interested"
+    t.boolean "watch_later"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "videos", force: :cascade do |t|
+    t.integer "youtube_channel_id"
+    t.string "video_url"
+    t.string "thumbnail_url"
+    t.string "title"
+    t.time "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "api_video_id"
+  end
+
 end

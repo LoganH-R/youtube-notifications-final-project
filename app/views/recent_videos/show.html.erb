@@ -1,0 +1,131 @@
+<div>
+  <div>
+    <h1>
+      Recent video #<%= @the_recent_video.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/recent_videos">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_recent_video/<%= @the_recent_video.id %>">
+          Delete recent video
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Video
+      </dt>
+      <dd>
+        <%= @the_recent_video.video_id %>
+      </dd>
+
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @the_recent_video.user_id %>
+      </dd>
+
+      <dt>
+        Called at
+      </dt>
+      <dd>
+        <%= @the_recent_video.called_at %>
+      </dd>
+
+      <dt>
+        Not interested
+      </dt>
+      <dd>
+        <%= @the_recent_video.not_interested %>
+      </dd>
+
+      <dt>
+        Watch later
+      </dt>
+      <dd>
+        <%= @the_recent_video.watch_later %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_recent_video.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_recent_video.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit recent video
+    </h2>
+
+    <form action="/modify_recent_video/<%= @the_recent_video.id %>"  method="post" >
+      <div>
+        <label for="video_id_box">
+          Video
+        </label>
+
+        <input type="text" id="video_id_box" name="query_video_id" value="<%= @the_recent_video.video_id %>">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_recent_video.user_id %>">
+      </div>
+
+      <div>
+        <label for="called_at_box">
+          Called at
+        </label>
+
+        <input type="time" id="called_at_box" name="query_called_at" value="<%= @the_recent_video.called_at %>">
+      </div>
+
+      <div>
+        <input type="checkbox" id="not_interested_box" name="query_not_interested" value="1" <%= "checked" if @the_recent_video.not_interested %>>
+
+        <label for="not_interested_box">
+            Not interested
+        </label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="watch_later_box" name="query_watch_later" value="1" <%= "checked" if @the_recent_video.watch_later %>>
+
+        <label for="watch_later_box">
+            Watch later
+        </label>
+      </div>
+
+      <button>
+        Update recent video
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

@@ -1,0 +1,131 @@
+<div>
+  <div>
+    <h1>
+      Video #<%= @the_video.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/videos">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_video/<%= @the_video.id %>">
+          Delete video
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Youtube channel
+      </dt>
+      <dd>
+        <%= @the_video.youtube_channel_id %>
+      </dd>
+
+      <dt>
+        Video url
+      </dt>
+      <dd>
+        <%= @the_video.video_url %>
+      </dd>
+
+      <dt>
+        Thumbnail url
+      </dt>
+      <dd>
+        <%= @the_video.thumbnail_url %>
+      </dd>
+
+      <dt>
+        Title
+      </dt>
+      <dd>
+        <%= @the_video.title %>
+      </dd>
+
+      <dt>
+        Published at
+      </dt>
+      <dd>
+        <%= @the_video.published_at %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_video.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_video.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit video
+    </h2>
+
+    <form action="/modify_video/<%= @the_video.id %>"  method="post" >
+      <div>
+        <label for="youtube_channel_id_box">
+          Youtube channel
+        </label>
+
+        <input type="text" id="youtube_channel_id_box" name="query_youtube_channel_id" value="<%= @the_video.youtube_channel_id %>">
+      </div>
+
+      <div>
+        <label for="video_url_box">
+          Video url
+        </label>
+
+        <input type="text" id="video_url_box" name="query_video_url" value="<%= @the_video.video_url %>">
+      </div>
+
+      <div>
+        <label for="thumbnail_url_box">
+          Thumbnail url
+        </label>
+
+        <input type="text" id="thumbnail_url_box" name="query_thumbnail_url" value="<%= @the_video.thumbnail_url %>">
+      </div>
+
+      <div>
+        <label for="title_box">
+          Title
+        </label>
+
+        <input type="text" id="title_box" name="query_title" value="<%= @the_video.title %>">
+      </div>
+
+      <div>
+        <label for="published_at_box">
+          Published at
+        </label>
+
+        <input type="time" id="published_at_box" name="query_published_at" value="<%= @the_video.published_at %>">
+      </div>
+
+      <button>
+        Update video
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

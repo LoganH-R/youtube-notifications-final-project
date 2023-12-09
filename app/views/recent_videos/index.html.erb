@@ -1,0 +1,146 @@
+<div>
+  <div>
+    <h1>
+      List of all recent videos
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new recent video
+    </h2>
+
+    <form action="/insert_recent_video" method="post">
+      <div>
+        <label for="video_id_box">
+          Video
+        </label>
+
+        <input type="text" id="video_id_box" name="query_video_id">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id">
+      </div>
+
+      <div>
+        <label for="called_at_box">
+          Called at
+        </label>
+
+        <input type="time" id="called_at_box" name="query_called_at">
+      </div>
+
+      <div>
+        <input type="checkbox" id="not_interested_box" name="query_not_interested" value="1">
+
+        <label for="not_interested_box">Not interested</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="watch_later_box" name="query_watch_later" value="1">
+
+        <label for="watch_later_box">Watch later</label>
+      </div>
+
+      <button>
+        Create recent video
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Video
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Called at
+        </th>
+
+        <th>
+          Not interested
+        </th>
+
+        <th>
+          Watch later
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_recent_videos.each do |a_recent_video| %>
+      <tr>
+        <td>
+          <%= a_recent_video.id %>
+        </td>
+
+        <td>
+          <%= a_recent_video.video_id %>
+        </td>
+
+        <td>
+          <%= a_recent_video.user_id %>
+        </td>
+
+        <td>
+          <%= a_recent_video.called_at %>
+        </td>
+
+        <td>
+          <%= a_recent_video.not_interested %>
+        </td>
+
+        <td>
+          <%= a_recent_video.watch_later %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_recent_video.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_recent_video.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/recent_videos/<%= a_recent_video.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

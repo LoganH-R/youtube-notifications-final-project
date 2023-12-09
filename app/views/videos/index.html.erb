@@ -1,0 +1,150 @@
+<div>
+  <div>
+    <h1>
+      List of all videos
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new video
+    </h2>
+
+    <form action="/insert_video" method="post">
+      <div>
+        <label for="youtube_channel_id_box">
+          Youtube channel
+        </label>
+
+        <input type="text" id="youtube_channel_id_box" name="query_youtube_channel_id">
+      </div>
+
+      <div>
+        <label for="video_url_box">
+          Video url
+        </label>
+
+        <input type="text" id="video_url_box" name="query_video_url">
+      </div>
+
+      <div>
+        <label for="thumbnail_url_box">
+          Thumbnail url
+        </label>
+
+        <input type="text" id="thumbnail_url_box" name="query_thumbnail_url">
+      </div>
+
+      <div>
+        <label for="title_box">
+          Title
+        </label>
+
+        <input type="text" id="title_box" name="query_title">
+      </div>
+
+      <div>
+        <label for="published_at_box">
+          Published at
+        </label>
+
+        <input type="time" id="published_at_box" name="query_published_at">
+      </div>
+
+      <button>
+        Create video
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Youtube channel
+        </th>
+
+        <th>
+          Video url
+        </th>
+
+        <th>
+          Thumbnail url
+        </th>
+
+        <th>
+          Title
+        </th>
+
+        <th>
+          Published at
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_videos.each do |a_video| %>
+      <tr>
+        <td>
+          <%= a_video.id %>
+        </td>
+
+        <td>
+          <%= a_video.youtube_channel_id %>
+        </td>
+
+        <td>
+          <%= a_video.video_url %>
+        </td>
+
+        <td>
+          <%= a_video.thumbnail_url %>
+        </td>
+
+        <td>
+          <%= a_video.title %>
+        </td>
+
+        <td>
+          <%= a_video.published_at %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_video.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_video.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/videos/<%= a_video.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

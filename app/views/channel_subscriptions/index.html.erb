@@ -1,0 +1,116 @@
+<div>
+  <div>
+    <h1>
+      List of all channel subscriptions
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new channel subscription
+    </h2>
+
+    <form action="/insert_channel_subscription" method="post">
+      <div>
+        <label for="youtube_channel_id_box">
+          Youtube channel
+        </label>
+
+        <input type="text" id="youtube_channel_id_box" name="query_youtube_channel_id">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id">
+      </div>
+
+      <div>
+        <input type="checkbox" id="favorited_box" name="query_favorited" value="1">
+
+        <label for="favorited_box">Favorited</label>
+      </div>
+
+      <button>
+        Create channel subscription
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Youtube channel
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Favorited
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_channel_subscriptions.each do |a_channel_subscription| %>
+      <tr>
+        <td>
+          <%= a_channel_subscription.id %>
+        </td>
+
+        <td>
+          <%= a_channel_subscription.youtube_channel_id %>
+        </td>
+
+        <td>
+          <%= a_channel_subscription.user_id %>
+        </td>
+
+        <td>
+          <%= a_channel_subscription.favorited %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_channel_subscription.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_channel_subscription.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/channel_subscriptions/<%= a_channel_subscription.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

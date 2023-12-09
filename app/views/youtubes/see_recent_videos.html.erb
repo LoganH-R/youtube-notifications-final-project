@@ -1,0 +1,27 @@
+<div class="container-fluid mt-3">
+  <h2 class="mb-4">Most Recent Videos for your Favorited Channels</h2>
+  <a>Note: if you changed which channels' videos you would like to see on the "Your Channels" page, then clicked on the NavBar for this page, your recent videos will not be updated. You must click the "See Recent Videos" button at the bottom of the "Your Channels" page in order to update this page.<a>
+  
+  <div class="row">
+    <% @favorited_channels_recent_videos.each do |most_recent_video| %>
+      <div class="col-xs-12 col-sm-6 col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-header text-center">
+            <% channel = most_recent_video.youtube_channel %>
+            <h3><%= channel.channel_name %></h3>
+          </div>
+          
+          <a href="<%= most_recent_video.video_url %>" target="_blank" rel="noopener noreferrer">
+            <img src="<%= most_recent_video.thumbnail_url %>" class="card-img-top img-fluid" alt="Thumbnail for <%= channel.channel_name %>'s latest video">
+          </a>
+
+          <div class="card-body text-center">
+            <a class="card-title">
+              <%= most_recent_video.title %>
+            </a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
