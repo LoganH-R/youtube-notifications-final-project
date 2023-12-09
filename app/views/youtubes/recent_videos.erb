@@ -1,15 +1,21 @@
 <h1>List of Most Recent Videos by Channel</h1>
 
-<a>Preliminary stuff rn. I would like to categorize it a bit better</a>
+<a>Preliminary stuff</a>
+<a>Need to add options to save a video to watch later or not interested, and organize by channel + do bootstrap grid format</a>
+<a>if you have time, make it so that each channel has two options for shorts and main videos</a>
 
 <ul>
   <% most_recent_videos = RecentVideo.where({ :user_id => current_user.id }) %>
   <% most_recent_videos.each do |most_recent_video| %>
     <li>
       <% video = most_recent_video.video %>
+      <% channel = video.youtube_channel %>
       <%= video.title %>
       <% #video.thumbnail_url %>
-      <img src="<%= video.thumbnail_url %>" height="300px">
+      <a href="<%= video.video_url %>" target="_blank" rel="noopener noreferrer">
+        <img src="<%= video.thumbnail_url %>" height="300px" alt="Thumbnail for <%= channel.channel_name %>'s latest video">
+      </a>
+          <% #GP-TA told me that _blank opens in a new tab, rel= stuff is good for security/privacy reasons, and alt= is good for issues when image isn't shown/for accessibility purposes %>
     </li>
   <% end %>
 </ul>

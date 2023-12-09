@@ -1,26 +1,29 @@
 <h1>List of Channels Subscribed To</h1>
 
-<a>Click on the star next to a channel to favorite it and see its most recent videos later</a>
+<a>By default, you will see the recent videos for all of the channels you are subscribed to. If you would like to not see videos for a channel, uncheck the box below</a>
 
-<ul>
-  <% subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id }) %>
+
+
+<% subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id }) %>
+<form action="/see_videos" method="post" style="margin-top: 20px;">
   <% subscribed_channels.each do |subscribed_channel| %>
-    <li>
-      <% channel = subscribed_channel.channel %>
-      <%= channel.channel_name %>
-      <% #channel.channel_pfp_url %>
-      <img src="<%= channel.channel_pfp_url %>" height="100px">
-      <%= channel.channel_url %>     
-    </li>
-  <% end %>
-</ul>
+    <% channel = subscribed_channel.channel %>
 
-<form action="/see_videos">
-  <button>
-    See Most Recent Videos
+    <div class="subscribed_channel">
+      <label>
+        <input type="checkbox" name = "favorited_channels" value = "<%= channel.youtube_api_channel_id %>" checked = "checked" >
+      </label>
+
+      <img src="<%= channel.channel_pfp_url %>" height="100px"> <!-- Change size of this later. could add class ="channel_pfp" and put the size and other info in a CSS stylesheet later too -->
+      <span>
+        <a href="<%= channel.channel_url %>" target="_blank" rel="noopener noreferrer">
+          <%= channel.channel_name %>    
+        </a>
+      </span> <!-- change that the link changes from blue to purple after you click on it later. could make it a class and do this in CSS stylesheet later -->
+    <div>
+  <% end %>
+
+  <button type="submit" style="margin-top: 30px;">
+    See Recent Videos
   </button>
 </form>
-
-
-<% #to do the star thing, I have to refresh the page each time they click on a star %>
-<% #perhaps a form here to take you to youtubes/show where you then see the subscriptions and the vidoes %>

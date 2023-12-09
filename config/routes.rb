@@ -86,7 +86,7 @@ Rails.application.routes.draw do
   root "youtube#index"
 
   #click see recent videos button, takes you here
-  get("/see_videos", { :controller => "youtube", :action => "recent_videos" })
+  post("/see_videos", { :controller => "youtube", :action => "recent_videos" })
 
 
 end

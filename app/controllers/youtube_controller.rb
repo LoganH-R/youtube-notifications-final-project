@@ -103,19 +103,41 @@ class YoutubeController < ApplicationController
       youtube = Google::Apis::YoutubeV3::YouTubeService.new
       youtube.authorization = credentials
 
-      subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id })
-      youtube_api_channel_ids = Array.new
+      favorited_channels_api_ids = Array.new
+      favorited_channels_api_ids.push(params["favorited_channels"])
 
-      subscribed_channels.each do |subscribed_channel|
-        database_channel_id = subscribed_channel.youtube_channel_id
-        channel_id = Channel.find_by({ :id => database_channel_id }).youtube_api_channel_id
-        youtube_api_channel_ids.push(channel_id)
+      #set favorited status for all channels not included here as false. accounts for if a user updated something
+      all_channels_subscribed_to = ChannelSubscription.where({ :user_id => current_user.id })
+      all_channels_subscribed_to.each do |a_channel_subscribed_to|
+        the_database_channel_subscribed_to = Channel.find_by({ :id => a_channel_subscribed_to.youtube_channel_id })
+        favorited_or_not = favorited_channels_api_ids.include?(the_database_channel_subscribed_to.youtube_api_channel_id)
+        if favorited_or_not = false
+          a_channel_subscribed_to.favorited = false
+          a_channel_subscribed_to.save
+        end
       end
 
-      @outputs = Array.new
+      #subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id })
+      #youtube_api_channel_ids = Array.new
 
-      youtube_api_channel_ids.each do |youtube_api_channel_id|
-        channel = youtube.list_channels("contentDetails", id: youtube_api_channel_id).items.first
+      #subscribed_channels.each do |subscribed_channel|
+      #  database_channel_id = subscribed_channel.youtube_channel_id
+      #  channel_id = Channel.find_by({ :id => database_channel_id }).youtube_api_channel_id
+      #  youtube_api_channel_ids.push(channel_id)
+      #end
+
+      #@outputs = Array.new
+
+      favorited_channels_api_ids.each do |favorited_channel_api_id|
+        #add favorited status to subscribed channel
+        database_channel = Channel.find_by({ :youtube_api_channel_id => favorited_channel_api_id })
+        matching_subscribed_channel = ChannelSubscription.where({ :user_id => current_user.id }).where({ :youtube_channel_id => database_channel.id })
+        subscribed_channel = matching_subscribed_channel.first
+        subscribed_channel.favorited = true
+        subscribed_channel.save
+        
+        #accessing channel's recent video. I might have the error where if a channel doesn't have any videos it might result in an error
+        channel = youtube.list_channels("contentDetails", id: favorited_channel_api_id).items.first
         uploads_playlist_id = channel.content_details.related_playlists.uploads
 
         playlist_items = youtube.list_playlist_items("snippet", playlist_id: uploads_playlist_id, max_results: 1)
@@ -125,7 +147,7 @@ class YoutubeController < ApplicationController
           most_recent_video = playlist_items.items.first
           api_video_id = most_recent_video.snippet.resource_id.video_id
 
-          matching_channel = Channel.where({ :youtube_api_channel_id => youtube_api_channel_id }).first
+          matching_channel = Channel.where({ :youtube_api_channel_id => favorited_channel_api_id }).first
           
           matching_videos = Video.where({ :api_video_id => api_video_id })
           exists = matching_videos.count > 0
@@ -215,11 +237,20 @@ class YoutubeController < ApplicationController
           end
           #called_at, not_interested, and watch_later are not addressed yet
 
-          @outputs.push("video_title")
+          #@outputs.push("video_title")
         else
-          @outputs.push("No videos found for this channel")
+          #@outputs.push("No videos found for this channel")
         end
       end
+
+      #this was to classify non-favorited as not favorited, but i did it above
+      #subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id })
+      #subscribed_channels.each do |a_subscribed_channel|
+      #  if a_subscribed_channel.favorited != true
+      #    a_subscribed_channel.favorited = false
+      #    a_subscribed_channel.save
+      #  end
+      #end
 
       render({ :template => "youtubes/recent_videos" })
     end
