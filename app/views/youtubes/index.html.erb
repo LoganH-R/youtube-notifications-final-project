@@ -1,17 +1,19 @@
-<h1>List of Channels Subscribed To</h1>
+<h2 style="margin-left: 15px;">Your Channels</h2>
 
-<a>By default, you will see the recent videos for all of the channels you are subscribed to. If you would like to not see videos for a channel, uncheck the box below</a>
+<a style="margin-left: 15px;">Here are the channels you are subscribed to. Check the box next to which channels you would like to see the most recent videos of.</a>
 
-
+<% favorited_channels = ChannelSubscription.where({ :user_id => current_user.id }).where({ :favorited => true}) %>
+<% favorited_channels_ids = favorited_channels.pluck(:youtube_channel_id) %>
 
 <% subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id }) %>
 <form action="/see_videos" method="post" data-turbo="false" style="margin-top: 20px; margin-left: 20px;">
   <% subscribed_channels.each do |subscribed_channel| %>
     <% channel = subscribed_channel.channel %>
+    <% favorited_status = favorited_channels_ids.include?(channel.id) %>
 
     <div class="subscribed_channel">
       <label>
-        <input type="checkbox" name="favorited_channels[]" value="<%= channel.youtube_api_channel_id %>" checked="checked" >
+        <input type="checkbox" name="favorited_channels[]" value="<%= channel.youtube_api_channel_id %>" <%= 'checked="checked"' if favorited_status == true %>>
       </label>
 
       <img src="<%= channel.channel_pfp_url %>" height="100px"> <!-- Change size of this later. could add class ="channel_pfp" and put the size and other info in a CSS stylesheet later too -->
