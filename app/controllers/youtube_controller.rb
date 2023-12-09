@@ -237,22 +237,10 @@ class YoutubeController < ApplicationController
           end
           #called_at, not_interested, and watch_later are not addressed yet
 
-          #@outputs.push("video_title")
-        else
-          #@outputs.push("No videos found for this channel")
         end
       end
 
-      #this was to classify non-favorited as not favorited, but i did it above
-      #subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id })
-      #subscribed_channels.each do |a_subscribed_channel|
-      #  if a_subscribed_channel.favorited != true
-      #    a_subscribed_channel.favorited = false
-      #    a_subscribed_channel.save
-      #  end
-      #end
-
-      render({ :template => "youtubes/recent_videos" })
+      render({ :template => "youtubes/see_recent_videos" })
     end
   end
 end

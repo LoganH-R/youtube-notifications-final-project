@@ -5,13 +5,13 @@
 
 
 <% subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id }) %>
-<form action="/see_videos" method="post" style="margin-top: 20px;">
+<form action="/see_videos" method="post" data-turbo="false" style="margin-top: 20px;">
   <% subscribed_channels.each do |subscribed_channel| %>
     <% channel = subscribed_channel.channel %>
 
     <div class="subscribed_channel">
       <label>
-        <input type="checkbox" name = "favorited_channels" value = "<%= channel.youtube_api_channel_id %>" checked = "checked" >
+        <input type="checkbox" name="favorited_channels" value="<%= channel.youtube_api_channel_id %>" checked="checked" >
       </label>
 
       <img src="<%= channel.channel_pfp_url %>" height="100px"> <!-- Change size of this later. could add class ="channel_pfp" and put the size and other info in a CSS stylesheet later too -->
