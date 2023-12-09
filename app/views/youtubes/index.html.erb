@@ -11,7 +11,7 @@
 
     <div class="subscribed_channel">
       <label>
-        <input type="checkbox" name="favorited_channels" value="<%= channel.youtube_api_channel_id %>" checked="checked" >
+        <input type="checkbox" name="favorited_channels[]" value="<%= channel.youtube_api_channel_id %>" checked="checked" >
       </label>
 
       <img src="<%= channel.channel_pfp_url %>" height="100px"> <!-- Change size of this later. could add class ="channel_pfp" and put the size and other info in a CSS stylesheet later too -->

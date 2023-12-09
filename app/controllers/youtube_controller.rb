@@ -104,29 +104,20 @@ class YoutubeController < ApplicationController
       youtube.authorization = credentials
 
       favorited_channels_api_ids = Array.new
-      favorited_channels_api_ids.push(params["favorited_channels"])
+      favorited_channels_api_ids = params["favorited_channels"]
 
       #set favorited status for all channels not included here as false. accounts for if a user updated something
       all_channels_subscribed_to = ChannelSubscription.where({ :user_id => current_user.id })
       all_channels_subscribed_to.each do |a_channel_subscribed_to|
         the_database_channel_subscribed_to = Channel.find_by({ :id => a_channel_subscribed_to.youtube_channel_id })
         favorited_or_not = favorited_channels_api_ids.include?(the_database_channel_subscribed_to.youtube_api_channel_id)
-        if favorited_or_not = false
+        if favorited_or_not == false
           a_channel_subscribed_to.favorited = false
           a_channel_subscribed_to.save
         end
       end
 
-      #subscribed_channels = ChannelSubscription.where({ :user_id => current_user.id })
-      #youtube_api_channel_ids = Array.new
-
-      #subscribed_channels.each do |subscribed_channel|
-      #  database_channel_id = subscribed_channel.youtube_channel_id
-      #  channel_id = Channel.find_by({ :id => database_channel_id }).youtube_api_channel_id
-      #  youtube_api_channel_ids.push(channel_id)
-      #end
-
-      #@outputs = Array.new
+      @favorited_channels_recent_videos = Array.new
 
       favorited_channels_api_ids.each do |favorited_channel_api_id|
         #add favorited status to subscribed channel
@@ -204,6 +195,7 @@ class YoutubeController < ApplicationController
               repeat_video.save
             end
 
+            @favorited_channels_recent_videos.push(repeat_video)
           else
             new_video = Video.new
             new_video.published_at = Time.parse(most_recent_video.snippet.published_at)
@@ -214,6 +206,8 @@ class YoutubeController < ApplicationController
             new_video.youtube_channel_id = matching_channel.id
 
             new_video.save
+
+            @favorited_channels_recent_videos.push(new_video)
           end
 
           #checking if recent_videos already has an entry for that user and their recent videos page
